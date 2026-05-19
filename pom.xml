@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>fr.icy</groupId>
+        <artifactId>pom-icy</artifactId>
+        <version>3.0.0-a.7</version>
+    </parent>
+
+    <groupId>fr.icy.lib</groupId>
+    <artifactId>task</artifactId>
+    <version>1.0.0-a.7-SNAPSHOT</version>
+
+    <name>Task</name>
+    <description>Pipeline and Task utilities</description>
+    <url>https://icy.bioimageanalysis.org/</url>
+    <inceptionYear>2026</inceptionYear>
+
+    <scm>
+        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task</url>
+        <tag>v${project.version}</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitLab Issues</system>
+        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task/-/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>GitLab CI</system>
+        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task/-/pipelines</url>
+    </ciManagement>
+
+    <organization>
+        <name>Institut Pasteur</name>
+        <url>https://www.pasteur.fr/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>GNU LGPLv3</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>tmusset</id>
+            <name>Thomas Musset</name>
+            <url>https://icy.bioimageanalysis.org/author/tmusset/</url>
+            <roles>
+                <role>lead</role>
+                <role>developer</role>
+                <role>debugger</role>
+                <role>reviewer</role>
+                <role>support</role>
+                <role>maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Thomas Musset</name>
+        </contributor>
+    </contributors>
+
+    <mailingLists>
+        <mailingList>
+            <name>Icy</name>
+            <post>icy.team@pasteur.fr</post>
+        </mailingList>
+    </mailingLists>
+
+    <properties>
+        <license.licenseName>GNU LGPLv3</license.licenseName>
+        <license.copyrightOwners>Institut Pasteur</license.copyrightOwners>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>${com.formdev.flatlaf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-fonts-jetbrains-mono</artifactId>
+            <version>${com.formdev.flatlaf-fonts-jetbrains-mono.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.23.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
