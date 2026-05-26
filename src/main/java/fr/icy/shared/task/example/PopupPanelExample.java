@@ -1,10 +1,10 @@
-package fr.icy.lib.task.example;
+package fr.icy.shared.task.example;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
-import fr.icy.lib.task.*;
-import fr.icy.lib.task.gui.PipelinePanel;
+import fr.icy.shared.task.*;
+import fr.icy.shared.task.gui.PipelinePanel;
 import org.jspecify.annotations.NonNull;
 
 import javax.swing.*;

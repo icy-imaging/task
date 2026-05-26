@@ -1,4 +1,4 @@
-package fr.icy.lib.task;
+package fr.icy.shared.task;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Unmodifiable;

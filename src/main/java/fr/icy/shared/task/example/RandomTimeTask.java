@@ -1,6 +1,6 @@
-package fr.icy.lib.task.example;
+package fr.icy.shared.task.example;
 
-import fr.icy.lib.task.Task;
+import fr.icy.shared.task.Task;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Random;

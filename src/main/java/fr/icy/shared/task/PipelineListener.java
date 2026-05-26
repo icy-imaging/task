@@ -1,4 +1,4 @@
-package fr.icy.lib.task;
+package fr.icy.shared.task;
 
 /**
  * The {@code PipelineListener} interface should be implemented by components that need to respond

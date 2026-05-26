@@ -1,4 +1,4 @@
-package fr.icy.lib.task;
+package fr.icy.shared.task;
 
 /**
  * Functional interface for monitoring the progress of a task.

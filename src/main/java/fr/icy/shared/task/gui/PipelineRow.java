@@ -1,7 +1,7 @@
-package fr.icy.lib.task.gui;
+package fr.icy.shared.task.gui;
 
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
-import fr.icy.lib.task.*;
+import fr.icy.shared.task.*;
 import org.jspecify.annotations.NonNull;
 
 import javax.swing.*;
