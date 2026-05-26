@@ -10,27 +10,27 @@
         <version>3.0.0-a.7</version>
     </parent>
 
-    <groupId>fr.icy.lib</groupId>
+    <groupId>fr.icy.shared</groupId>
     <artifactId>task</artifactId>
     <version>1.0.0-a.7-SNAPSHOT</version>
 
     <name>Task</name>
-    <description>Pipeline and Task utilities</description>
+    <description>Pipeline and Task shared utilities</description>
     <url>https://icy.bioimageanalysis.org/</url>
     <inceptionYear>2026</inceptionYear>
 
     <scm>
-        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task</url>
+        <url>https://gitlab.pasteur.fr/bia/icy/shared/task</url>
         <tag>v${project.version}</tag>
     </scm>
 
     <issueManagement>
         <system>GitLab Issues</system>
-        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task/-/issues</url>
+        <url>https://gitlab.pasteur.fr/bia/icy/shared/task/-/issues</url>
     </issueManagement>
     <ciManagement>
         <system>GitLab CI</system>
-        <url>https://gitlab.pasteur.fr/bia/icy/libraries/task/-/pipelines</url>
+        <url>https://gitlab.pasteur.fr/bia/icy/shared/task/-/pipelines</url>
     </ciManagement>
 
     <organization>
