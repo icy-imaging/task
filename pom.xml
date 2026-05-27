@@ -12,7 +12,7 @@
 
     <groupId>fr.icy.shared</groupId>
     <artifactId>task</artifactId>
-    <version>1.0.0-a.7-SNAPSHOT</version>
+    <version>1.0.0-a.7</version>
 
     <name>Task</name>
     <description>Pipeline and Task shared utilities</description>
