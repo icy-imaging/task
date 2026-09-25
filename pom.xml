@@ -7,16 +7,16 @@
     <parent>
         <groupId>fr.icy</groupId>
         <artifactId>pom-icy</artifactId>
-        <version>3.0.0-a.7</version>
+        <version>3.0.0-a.8-SNAPSHOT</version>
     </parent>
 
     <groupId>fr.icy.shared</groupId>
     <artifactId>task</artifactId>
-    <version>1.0.0-a.7</version>
+    <version>1.0.0-a.8-SNAPSHOT</version>
 
     <name>Task</name>
     <description>Pipeline and Task shared utilities</description>
-    <url>https://icy.bioimageanalysis.org/</url>
+    <url>http://icy.fr/</url>
     <inceptionYear>2026</inceptionYear>
 
     <scm>
@@ -51,6 +51,7 @@
             <id>tmusset</id>
             <name>Thomas Musset</name>
             <url>https://icy.bioimageanalysis.org/author/tmusset/</url>
+            <timezone>Europe/Paris</timezone>
             <roles>
                 <role>lead</role>
                 <role>developer</role>
@@ -65,6 +66,8 @@
     <contributors>
         <contributor>
             <name>Thomas Musset</name>
+            <timezone>Europe/Paris</timezone>
+            <properties><id>Azargas</id></properties>
         </contributor>
     </contributors>
 
@@ -105,20 +108,28 @@
 
     <dependencies>
         <dependency>
+            <groupId>fr.icy.shared</groupId>
+            <artifactId>logging</artifactId>
+            <version>${fr.icy.shared.logging.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
             <version>${com.formdev.flatlaf.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-fonts-jetbrains-mono</artifactId>
             <version>${com.formdev.flatlaf-fonts-jetbrains-mono.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.23.0</version>
+            <version>${org.mockito.mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

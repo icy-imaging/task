@@ -1,8 +1,28 @@
+/*
+ * Copyright (c) 2010-2026. Institut Pasteur.
+ *
+ * This file is part of Icy.
+ * Icy is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Icy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Icy. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package fr.icy.shared.task.example;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
+import fr.icy.shared.logging.LogConfig;
+import fr.icy.shared.logging.LogManager;
 import fr.icy.shared.task.*;
 import fr.icy.shared.task.gui.PipelinePanel;
 import org.jspecify.annotations.NonNull;
@@ -12,7 +32,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The {@code PopupPanelExample} class is a graphical user interface (GUI) implementation that
@@ -248,6 +271,8 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
 
         final TaskExecutor executor = TaskExecutor.getInstance();
 
+        final Logger logger = Logger.getLogger(getClass().getName());
+
         new Thread(() -> {
             try {
                 executor.execute(pipeline);
@@ -257,7 +282,12 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
                         pipeline.getTasks().stream()
                                 .filter(st -> st.equals(task))
                                 .flatMap(st -> st.getError().stream())
-                                .forEach(err -> System.err.println(task.getName() + ": " + err.getMessage())) // TODO replace with logger
+                                .forEach(err -> {
+                                    if (err instanceof InterruptedException)
+                                        logger.log(Level.WARNING, "Task interrupted: [" + task.getClass().getName() + "]" + task.getName());
+                                    else
+                                        logger.log(Level.SEVERE, "Task failed: [" + task.getClass().getName() + "]" + task.getName(), err);
+                                })
                 );
             }
         }).start();
@@ -339,10 +369,16 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
      *
      * @param args an array of command-line arguments passed to the application; can be empty or null
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IOException {
         FlatJetBrainsMonoFont.installLazy();
         FlatLightLaf.setup();
         FlatLaf.setPreferredMonospacedFontFamily(FlatJetBrainsMonoFont.FAMILY);
+
+        LogManager.init(LogConfig.builder()
+                .consoleEnabled(true)
+                .consoleLevel(Level.CONFIG)
+                .build()
+        );
 
         SwingUtilities.invokeLater(() -> new PopupPanelExample().setVisible(true));
     }

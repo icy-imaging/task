@@ -1,10 +1,33 @@
+/*
+ * Copyright (c) 2010-2026. Institut Pasteur.
+ *
+ * This file is part of Icy.
+ * Icy is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Icy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Icy. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package fr.icy.shared.task;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents an abstract unit of work that can be executed. Each task has a unique
@@ -33,6 +56,8 @@ public abstract class Task {
 
     private final @NonNull List<ProgressListener> listeners = new CopyOnWriteArrayList<>();
 
+    private final Logger logger;
+
     /**
      * Constructs a new Task with a specified unique identifier (UID), name, and optional dependencies.
      *
@@ -45,6 +70,7 @@ public abstract class Task {
         this.uid = uid;
         this.name = Objects.requireNonNull(name, "Task name must not be null");
         this.dependencies = Set.of(dependencies);
+        this.logger = Logger.getLogger(getClass().getName());
     }
 
     /**
@@ -94,6 +120,13 @@ public abstract class Task {
     protected final void reportProgress(final int percent, final @Nullable String message) {
         this.progress = Math.min(100, Math.max(0, percent));
         this.message = message != null ? message : "";
+        //final Logger logger = Logger.getLogger(getClass().getName());
+        if (logger.isLoggable(Level.FINE)) {
+            if (this.message.isEmpty())
+                logger.fine("Task progress: [" + name + "] (" + progress + "%).");
+            else
+                logger.fine("Task progress: [" + name + "] " + this.message + " (" + progress + "%).");
+        }
         fireEvent();
     }
 
@@ -141,6 +174,9 @@ public abstract class Task {
 
         if (this.progress < 100)
             reportProgress(100);
+
+        if (logger.isLoggable(Level.FINE))
+            logger.log(Level.FINE, "Task completed: [" + name + "].");
     }
 
     /**
