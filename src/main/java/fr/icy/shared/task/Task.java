@@ -18,6 +18,7 @@
 
 package fr.icy.shared.task;
 
+import fr.icy.shared.logging.CustomLevel;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -26,7 +27,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +45,8 @@ import java.util.logging.Logger;
  * </ul>
  */
 public abstract class Task {
+    private static final Logger LOGGER = Logger.getLogger(Task.class.getName());
+
     private final Long uid;
     private final @NonNull String name;
     private final Set<Long> dependencies;
@@ -55,8 +57,6 @@ public abstract class Task {
     private volatile @Nullable Throwable error = null;
 
     private final @NonNull List<ProgressListener> listeners = new CopyOnWriteArrayList<>();
-
-    private final Logger logger;
 
     /**
      * Constructs a new Task with a specified unique identifier (UID), name, and optional dependencies.
@@ -70,7 +70,6 @@ public abstract class Task {
         this.uid = uid;
         this.name = Objects.requireNonNull(name, "Task name must not be null");
         this.dependencies = Set.of(dependencies);
-        this.logger = Logger.getLogger(getClass().getName());
     }
 
     /**
@@ -120,12 +119,11 @@ public abstract class Task {
     protected final void reportProgress(final int percent, final @Nullable String message) {
         this.progress = Math.min(100, Math.max(0, percent));
         this.message = message != null ? message : "";
-        //final Logger logger = Logger.getLogger(getClass().getName());
-        if (logger.isLoggable(Level.FINE)) {
+        if (LOGGER.isLoggable(CustomLevel.TRACE)) {
             if (this.message.isEmpty())
-                logger.fine("Task progress: [" + name + "] (" + progress + "%).");
+                LOGGER.log(CustomLevel.TRACE, "Task progress: [" + name + "] (" + progress + "%).");
             else
-                logger.fine("Task progress: [" + name + "] " + this.message + " (" + progress + "%).");
+                LOGGER.log(CustomLevel.TRACE, "Task progress: [" + name + "] " + this.message + " (" + progress + "%).");
         }
         fireEvent();
     }
@@ -175,8 +173,8 @@ public abstract class Task {
         if (this.progress < 100)
             reportProgress(100);
 
-        if (logger.isLoggable(Level.FINE))
-            logger.log(Level.FINE, "Task completed: [" + name + "].");
+        if (LOGGER.isLoggable(CustomLevel.TRACE))
+            LOGGER.log(CustomLevel.TRACE, "Task completed: [" + name + "].");
     }
 
     /**

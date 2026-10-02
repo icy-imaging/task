@@ -21,6 +21,7 @@ package fr.icy.shared.task.example;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
+import fr.icy.shared.logging.CustomLevel;
 import fr.icy.shared.logging.LogConfig;
 import fr.icy.shared.logging.LogManager;
 import fr.icy.shared.task.*;
@@ -34,7 +35,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -57,6 +57,8 @@ import java.util.logging.Logger;
  * also includes functionality to visualize and position popup components relative to an anchor.
  */
 public final class PopupPanelExample extends JFrame implements PipelineListener {
+    private static final Logger LOGGER = Logger.getLogger(PopupPanelExample.class.getName());
+
     /**
      * Represents a popup panel used for displaying additional UI components or
      * contextual information within the {@code PopupPanelExample} application.
@@ -271,8 +273,6 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
 
         final TaskExecutor executor = TaskExecutor.getInstance();
 
-        final Logger logger = Logger.getLogger(getClass().getName());
-
         new Thread(() -> {
             try {
                 executor.execute(pipeline);
@@ -283,10 +283,13 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
                                 .filter(st -> st.equals(task))
                                 .flatMap(st -> st.getError().stream())
                                 .forEach(err -> {
-                                    if (err instanceof InterruptedException)
-                                        logger.log(Level.WARNING, "Task interrupted: [" + task.getClass().getName() + "]" + task.getName());
-                                    else
-                                        logger.log(Level.SEVERE, "Task failed: [" + task.getClass().getName() + "]" + task.getName(), err);
+                                    if (err instanceof InterruptedException) {
+                                        if (LOGGER.isLoggable(CustomLevel.WARNING))
+                                            LOGGER.log(CustomLevel.WARNING, "Task interrupted: [" + task.getClass().getName() + "]" + task.getName());
+                                    }
+                                    else {
+                                        LOGGER.log(CustomLevel.ERROR, "Task failed: [" + task.getClass().getName() + "]" + task.getName(), err);
+                                    }
                                 })
                 );
             }
@@ -368,6 +371,7 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
      * an instance of the {@code PopupPanelExample} class.
      *
      * @param args an array of command-line arguments passed to the application; can be empty or null
+     * @throws IOException if an I/O error occurs during the initialization process
      */
     public static void main(final String[] args) throws IOException {
         FlatJetBrainsMonoFont.installLazy();
@@ -376,7 +380,7 @@ public final class PopupPanelExample extends JFrame implements PipelineListener 
 
         LogManager.init(LogConfig.builder()
                 .consoleEnabled(true)
-                .consoleLevel(Level.CONFIG)
+                .consoleLevel(CustomLevel.TRACE)
                 .build()
         );
 
